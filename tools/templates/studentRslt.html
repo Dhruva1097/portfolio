@@ -1,0 +1,326 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Student Result - Dhruv Majithiya{% endblock title %}
+{% block body %}
+{% block scripts %}
+<script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+<link href="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.3.0/flowbite.min.css" rel="stylesheet" />
+
+{% endblock scripts %}
+<section class="mx-auto max-w-2xl" style="margin-top:120px">
+  <style>
+    .block{
+      padding:10px;
+    }
+  </style>
+<form method="post">
+    {% csrf_token %}
+    <div class="space-y-12">
+      <div class="pb-12">
+        <h1 class="font-bold text-black text-center mt-10 text-3xl">Student Result Generator</h1>
+        
+        <p class="mt-20 text-2xl font-semibold text-black">Enter Your Subject Marks Out Of 100:</p>
+        <div class="sm:col-span-2">
+          <label for="postal-code" class="block text-sm font-medium leading-6 text-gray-900">Name</label>
+          <div class="mt-2">
+            <input type="text" name="name" id="name" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" max="100" required>
+          </div>
+      </div> 
+        <div class="mt-5 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+            <div class="sm:col-span-2">
+                <label for="postal-code" class="block text-sm font-medium leading-6 text-gray-900">English*</label>
+                <div class="mt-2">
+                  <input type="number" name="English" id="English" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" max="100" required>
+                </div>
+            </div>  
+            <div class="sm:col-span-2">
+                <label for="postal-code" class="block text-sm font-medium leading-6 text-gray-900">Hindi*</label>
+                <div class="mt-2">
+                  <input type="number" name="Hindi" id="Hindi" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" max="100" required>
+                </div>
+            </div>
+            <div class="sm:col-span-2">
+                <label for="postal-code" class="block text-sm font-medium leading-6 text-gray-900">Mathematics*</label>
+                <div class="mt-2">
+                    <input type="number" name="Mathematics" id="Mathematics" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" max="100" required>
+                </div>
+            </div>
+            <div class="sm:col-span-2">
+                <label for="postal-code" class="block text-sm font-medium leading-6 text-gray-900">Science*</label>
+                <div class="mt-2">
+                    <input type="number" name="Science" id="Science" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" max="100" required>
+                </div>
+            </div>
+            <div class="sm:col-span-2">
+                <label for="postal-code" class="block text-sm font-medium leading-6 text-gray-900">Computer Science*</label>
+                <div class="mt-2">
+                    <input type="number" name="cs" id="cs" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" max="100" required>
+                </div>
+            </div>
+    </div>
+  
+    <div class="mt-6 flex items-center justify-end gap-x-6">
+      <button type="button" class="text-sm font-semibold leading-6 text-gray-900">Cancel</button>
+      <button type="submit" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Get Result</button>
+    </div>
+  </form>
+  <form method="post" id="get_all_data">
+    {% csrf_token %}
+    <input type="hidden" name="getalldata" value="getdata">
+    <button type="submit" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Get All Data</button>
+  </form>
+</div>
+</section>
+  
+{% if data %}
+<script>
+  window.onload = function() {
+    window.scrollTo(0, document.body.scrollHeight);
+  }
+</script>
+<div class="relative overflow-x-auto">
+  <table class="w-full text-sm text-left rtl:text-right text-gray-500 dark:text-gray-400">
+      <thead class="text-xs text-gray-700 uppercase bg-gray-50 dark:bg-gray-700 dark:text-gray-400">
+          <tr>
+              <th scope="col" class="px-6 py-3">
+                ID
+              </th>
+              <th scope="col" class="px-6 py-3">
+                Name
+              </th>
+              <th scope="col" class="px-6 py-3">
+                English
+              </th>
+              <th scope="col" class="px-6 py-3">
+                Hindi
+              </th>
+              <th scope="col" class="px-6 py-3">
+                Maths
+              </th>
+              <th scope="col" class="px-6 py-3">
+                science
+              </th>
+              <th scope="col" class="px-6 py-3">
+                CS
+              </th>
+              <th scope="col" class="px-6 py-3">
+                Total
+              </th>
+              <th scope="col" class="px-6 py-3">
+                Percentage
+              </th>
+              <th scope="col" class="px-6 py-3">
+                Result
+              </th>
+              <th scope="col" class="px-6 py-3">
+                Grade
+              </th>
+              <th scope="col" class="px-6 py-3">
+                Edit
+              </th>
+              <th scope="col" class="px-6 py-3">
+                Delete
+              </th>
+          </tr>
+      </thead>
+      <tbody>
+        {% for x in data %}
+          <tr class="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
+              <th scope="row" class="px-6 py-4 font-medium text-gray-900 whitespace-nowrap dark:text-white">
+                  {{x.id}}
+              </th>
+              <td class="px-6 py-4">
+                  {{x.name}}
+              </td>
+              <td class="px-6 py-4">
+                  {{x.eng}}
+              </td>
+              <td class="px-6 py-4">
+                {{x.hin}}
+              </td>
+              <td class="px-6 py-4">
+                {{x.maths}}
+              </td>
+              <td class="px-6 py-4">
+                {{x.sci}}
+              </td>
+              <td class="px-6 py-4">
+                {{x.cs}}
+              </td>
+              <td class="px-6 py-4">
+                {{x.total}}
+              </td>
+              <td class="px-6 py-4">
+                {{x.perc}}
+              </td>
+              <td class="px-6 py-4">
+                {{x.res}}
+              </td>
+              <td class="px-6 py-4">
+                {{x.grade}}
+              </td>
+              <td class="px-6 py-4">
+                <button data-modal-target="default-modal" data-modal-toggle="default-modal" class="block text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800 tableEditButton" type="button">Edit</button>
+              </td>
+              <td class="px-6 py-4">
+                <a id="{{x.id}}" class="deletData rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600" style="cursor: pointer;">Delete</a>
+                {% csrf_token %}
+              </td>
+          </tr>
+          {% endfor %}
+      </tbody>
+  </table>
+  {% endif %}
+<section class="mx-auto max-w-2xl" style="margin-top:120px">
+  {% if result %}
+  <div class="mt-10">
+    <div class="px-4 sm:px-0">
+      <h3 class="text-base font-semibold leading-7 text-gray-900">Your Result:</h3>
+      {% comment %} <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Personal details and application.</p> {% endcomment %}
+    </div>
+    <div class="mt-6 border-t border-gray-100">
+      <dl class="divide-y divide-gray-100">
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+            <dt class="text-sm font-medium leading-6 text-gray-900">Result</dt>
+            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{result}}</dd>
+        </div>
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+          <dt class="text-sm font-medium leading-6 text-gray-900">Total Marks</dt>
+          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{total}}/500</dd>
+        </div>
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+          <dt class="text-sm font-medium leading-6 text-gray-900">Percentage</dt>
+          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{perc}} %</dd>
+        </div>
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+          <dt class="text-sm font-medium leading-6 text-gray-900">Grade</dt>
+          <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">{{grade}}</dd>
+        </div>
+        
+      </dl>
+    </div>
+  </div>
+  {% endif %}
+</section>
+
+
+<!-- Main modal -->
+<div id="default-modal" tabindex="-1" aria-hidden="true" class="hidden overflow-y-auto overflow-x-hidden fixed top-0 right-0 left-0 z-50 justify-center items-center w-full md:inset-0 h-[calc(100%-1rem)] max-h-full">
+    <div class="relative p-4 w-full max-w-2xl max-h-full">
+        <!-- Modal content -->
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+            <!-- Modal header -->
+            <div class="flex items-center justify-between p-4 md:p-5 border-b rounded-t dark:border-gray-600">
+                
+                <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ms-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white" data-modal-hide="default-modal">
+                    <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+                        <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6"/>
+                    </svg>
+                    <span class="sr-only">Close modal</span>
+                </button>
+            </div>
+            <!-- Modal body -->
+            <div class="p-4 md:p-5">
+              <form method="post">
+                {% csrf_token %}
+                <div class="">
+                  <div class="">
+                    <p class="mt-20 text-2xl font-semibold text-black">Enter Your Subject Marks Out Of 100:</p>
+                    <div class="sm:col-span-2">
+                      <label for="postal-code" class="block text-sm font-medium leading-6 text-gray-900">Name</label>
+                      <div class="mt-2">
+                        <input type="text" name="uname" id="uname" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" max="100" required>
+                      </div>
+                  </div> 
+                    <div class="mt-5 grid grid-cols-1 gap-x-6 gap-y-8 sm:grid-cols-6">
+                        <div class="sm:col-span-2">
+                            <label for="postal-code" class="block text-sm font-medium leading-6 text-gray-900">English*</label>
+                            <div class="mt-2">
+                              <input type="number" name="uEnglish" id="uEnglish" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" max="100" required>
+                            </div>
+                        </div>  
+                        <div class="sm:col-span-2">
+                            <label for="postal-code" class="block text-sm font-medium leading-6 text-gray-900">Hindi*</label>
+                            <div class="mt-2">
+                              <input type="number" name="uHindi" id="uHindi" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" max="100" required>
+                            </div>
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label for="postal-code" class="block text-sm font-medium leading-6 text-gray-900">Mathematics*</label>
+                            <div class="mt-2">
+                                <input type="number" name="uMathematics" id="uMathematics" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" max="100" required>
+                            </div>
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label for="postal-code" class="block text-sm font-medium leading-6 text-gray-900">Science*</label>
+                            <div class="mt-2">
+                                <input type="number" name="uScience" id="uScience" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" max="100" required>
+                            </div>
+                        </div>
+                        <div class="sm:col-span-2">
+                            <label for="postal-code" class="block text-sm font-medium leading-6 text-gray-900">Computer Science*</label>
+                            <div class="mt-2">
+                                <input type="number" name="ucs" id="ucs" class="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6" max="100" required>
+                            </div>
+                        </div>
+                        <input type="hidden" name="model_id" value="" id="model_id">
+                </div>
+              </div>
+              <!-- Modal footer -->
+              <div class="flex items-center p-4 md:p-5 border-t border-gray-200 rounded-b dark:border-gray-600">
+                <button data-modal-hide="default-modal" type="submit" class="text-white bg-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800">Update</button>
+              </form>
+                <button data-modal-hide="default-modal" type="button" class="py-2.5 px-5 ms-3 text-sm font-medium text-gray-900 focus:outline-none bg-white rounded-lg border border-gray-200 hover:bg-gray-100 hover:text-blue-700 focus:z-10 focus:ring-4 focus:ring-gray-100 dark:focus:ring-gray-700 dark:bg-gray-800 dark:text-gray-400 dark:border-gray-600 dark:hover:text-white dark:hover:bg-gray-700">Decline</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+  $(document).ready(function() {
+    $('.deletData').click(function(event) {
+        event.preventDefault();
+        const id = $(this).attr('id');
+        csrfToken = $(this).parent().find('input').attr("value");
+        console.log(csrfToken);
+        $.ajax({
+            url: "/student-result/",
+            type: 'POST',
+            data: { myid: id },
+            headers: {
+              'X-CSRFToken': csrfToken
+          },
+            success: function(response) {
+              $('#get_all_data').submit(); 
+              
+            },
+            error: function(xhr, status, error) {
+                console.error('There is an error:', error);
+            }
+        });
+    });
+});
+</script>
+<script>
+  $(document).ready(function() {
+    $('.tableEditButton').click(function(){
+      row = $(this).parent().parent();
+      id = row.find('th:eq(0)').text().trim();
+      name = row.find('td:eq(0)').text().trim();
+      eng = row.find('td:eq(1)').text().trim();
+      hindi = row.find('td:eq(2)').text().trim();
+      maths = row.find('td:eq(3)').text().trim();
+      sci = row.find('td:eq(4)').text().trim();
+      cs = row.find('td:eq(5)').text().trim();
+      //console.log(cs);
+      $('#model_id').val(id);
+      $('#uname').val(name);
+      $('#uEnglish').val(eng);
+      $('#uHindi').val(hindi);
+      $('#uMathematics').val(maths);
+      $('#uScience').val(sci);
+      $('#ucs').val(cs);
+    });
+  });
+</script>
+{% endblock body %}

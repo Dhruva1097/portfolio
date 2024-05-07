@@ -1,0 +1,47 @@
+{% extends "base.html" %}
+{% load static %}
+{% block title %}Student Result - Dhruv Majithiya{% endblock title %}
+{% block body %}
+
+<section class="mx-auto max-w-2xl" style="margin-top:120px">
+<form method="post">
+    {% csrf_token %}
+    <div class="space-y-12">
+      <div class="pb-12">
+        <h1 class="font-bold text-black text-center mt-10 text-3xl">Calculator</h1>
+        
+        <p class="mt-20 text-2xl font-semibold text-black">Enter Your Subject Marks Out Of 100:</p>
+        <div class="mt-5">
+            <div class="sm:col-span-2">
+                <label for="postal-code" class="block text-sm font-medium leading-6 text-gray-900">Enter Your Calculations With Operator*</label>
+                <div class="mt-2">
+                  <textarea name="data" id="data" class="block w-full rounded-md border-0 p-5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 text-xl" required></textarea>
+                </div>
+            </div>  
+            
+    </div>
+  
+    <div class="mt-6 flex items-center justify-end gap-x-6">
+      <button type="button" class="text-sm font-semibold leading-6 text-gray-900">Cancel</button>
+      <button type="submit" class="rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600">Get Result</button>
+    </div>
+  </form>
+  {% if data %}
+  <div class="mt-10">
+    <div class="px-4 sm:px-0">
+      {% comment %} <h3 class="text-base font-semibold leading-7 text-gray-900">Your Result:</h3> {% endcomment %}
+      {% comment %} <p class="mt-1 max-w-2xl text-sm leading-6 text-gray-500">Personal details and application.</p> {% endcomment %}
+    </div>
+    <div class="mt-6 border-t border-gray-100">
+      <dl class="divide-y divide-gray-100">
+        <div class="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+            <dt class="text-sm font-medium leading-6 text-gray-900" style="font-size:30px">Answer</dt>
+            <dd class="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0" style="font-size:30px">{{data}}</dd>
+        </div>        
+      </dl>
+    </div>
+  </div>
+  {% endif %}
+</section>
+
+{% endblock body %}
